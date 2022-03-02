@@ -40,31 +40,18 @@ app.layout = html.Div([
         ]),
         dbc.Card(
             dbc.CardBody([
-                # dbc.Row([
-                #     html.H3(f"Age range:", style={'color': MIDDLE_GRAY}),
-                #     dcc.Dropdown(
-                #         id='cases_age_range',
-                #         options=[{'label': i, 'value': i} for i in controller.get_age_ranges()],
-                #         value=controller.get_age_ranges()[0],
-                #         clearable=False
-                #     ),
-                # ]),
                 dcc.Graph(
                     id='cases_evolution_figure',
                     figure=controller.get_cases_evolution_figure(),
                 ),
-                # dbc.Row(id='parameters', children=Parameters(cc).get_layout()),
-                # dbc.Row([
-                #     dbc.Col([
-                #         dbc.Button(
-                #             "COMPUTE",
-                #             color="info",
-                #             className="mr-1",
-                #             id='compute',
-                #             style={'font-size': '21px', 'height': 40}
-                #         ),
-                #     ], width='auto')
-                # ], justify='center'),
+            ])
+        ),
+        dbc.Card(
+            dbc.CardBody([
+                dcc.Graph(
+                    id='hosps_evolution_figure',
+                    figure=controller.get_hosps_evolution_figure(),
+                ),
             ])
         ),
     # ], style={'max-width': '3000px'})

@@ -64,5 +64,8 @@ class Controller:
     def get_cases_evolution_figure(self):
         return figures.get_cases_evolution_figure(self.cases_df, self._current_region)
 
+    def get_hosps_evolution_figure(self):
+        return figures.get_hosps_evolution_figure(self.hosps_df, self._current_region)
+
     def set_current_region(self, region):
         self._current_region = region
