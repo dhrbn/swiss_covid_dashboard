@@ -54,20 +54,35 @@ app.layout = html.Div([
                 ),
             ])
         ),
+        dbc.Card(
+            dbc.CardBody([
+                dcc.Graph(
+                    id='vaccine_evolution_figure',
+                    figure=controller.get_vaccine_evolution_figure(),
+                ),
+            ])
+        ),
     # ], style={'max-width': '3000px'})
     ])
 ])
 
 
 @app.callback(
-    Output('cases_evolution_figure', 'figure'),
+    [
+        Output('cases_evolution_figure', 'figure'),
+        Output('hosps_evolution_figure', 'figure'),
+        Output('vaccine_evolution_figure', 'figure'),
+    ],
     [
         Input('regions_dropdown', 'value'),
     ]
 )
-def mmi_update(region):
+def region_update(region):
     controller.set_current_region(region)
-    return controller.get_cases_evolution_figure()
+    fig1 = controller.get_cases_evolution_figure()
+    fig2 = controller.get_hosps_evolution_figure()
+    fig3 = controller.get_vaccine_evolution_figure()
+    return fig1, fig2, fig3
 
 
 if __name__ == '__main__':

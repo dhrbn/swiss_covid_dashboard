@@ -17,8 +17,6 @@ class Controller:
         self.cases_df = pd.read_csv(cases_file)
         self.cases_df['date'] = self.cases_df['date'].apply(convert_date)
 
-
-
         # Adding the total case per day and per region (aggregating the ageRange column)
 
         df = self.cases_df.groupby(['date', 'geoRegion']).sum()
@@ -26,20 +24,6 @@ class Controller:
         df['geoRegion'] = [i[1] for i in df.index]
         df['ageRange'] = 'Total'
         self.cases_df = self.cases_df.append(df, ignore_index=True)
-
-
-        # for date in self.cases_df.date.unique():
-        #     df_date = self.cases_df[self.cases_df.date == date]
-        #     for region in self.cases_df.geoRegion.unique():
-        #         print(date, region)
-        #         df_region = df_date[df_date.geoRegion == region]
-        #         total_cases = df_region.entries.sum()
-        #         dic = dict(
-        #             date=date,
-        #             geoRegion=region,
-        #             ageRange='all',
-        #             entries=total_cases,
-        #         )
         self.cases_df.sort_values(by=['date'], inplace=True)
 
         self.hosps_df = pd.read_csv(hosps_file)
@@ -66,6 +50,9 @@ class Controller:
 
     def get_hosps_evolution_figure(self):
         return figures.get_hosps_evolution_figure(self.hosps_df, self._current_region)
+
+    def get_vaccine_evolution_figure(self):
+        return figures.get_vaccine_evolution_figure(self.vacc_df, self._current_region)
 
     def set_current_region(self, region):
         self._current_region = region

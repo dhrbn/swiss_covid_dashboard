@@ -93,3 +93,53 @@ def get_hosps_evolution_figure(df, region):
     )
 
     return go.Figure(data=gos, layout=layout)
+
+
+def get_vaccine_evolution_figure(df, region):
+    if 'geoRegion' in df.columns:
+        df = df[df.geoRegion == region]
+
+    all_vaccine_df = df.groupby(['date', 'geoRegion', 'type']).sum()
+    all_vaccine_df['date'] = [i[0] for i in all_vaccine_df.index]
+    all_vaccine_df['geoRegion'] = [i[1] for i in all_vaccine_df.index]
+    all_vaccine_df['type'] = [i[2] for i in all_vaccine_df.index]
+
+    gos = []
+    for idx, vaccine_type in enumerate(sorted(all_vaccine_df.type.unique())):
+        df_type = all_vaccine_df[all_vaccine_df.type == vaccine_type]
+        evo_go = go.Scatter(
+            x=df_type.date,
+            y=df_type.sumTotal,
+            name=f"{vaccine_type}",
+            text=f"Cases evolution, region {region}, vaccine type {vaccine_type}",
+            xaxis='x',
+            yaxis='y',
+            line=dict(
+                # width=2,
+                color=COLORS[idx],
+            ),
+            hoverlabel=dict(
+                namelength=-1,
+            )
+        )
+        gos.append(evo_go)
+
+    layout = dict(
+        template="plotly_white",
+        annotations=[],
+        showlegend=True,
+        xaxis=dict(
+            title='Time',
+        ),
+        yaxis=dict(
+            title=f"Cases",
+        ),
+        title=dict(
+            text=f'Vaccination evolution for region {region}',
+        )
+        # font=dict(
+        #     family='century gothic',
+        # ),
+    )
+
+    return go.Figure(data=gos, layout=layout)
