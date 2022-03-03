@@ -33,7 +33,8 @@ app.layout = html.Div([
                     dcc.Graph(
                         id='swiss_map_figure',
                         figure=controller.get_swiss_map_figure(),
-                        config=dict(displayModeBar=False, scrollZoom=False, dragMode=False),
+                        # config=dict(displayModeBar=False, scrollZoom=False, dragMode=False),
+                        config=dict(displayModeBar=False, scrollZoom=False),
                     ),
                 ]),
             ),
@@ -128,5 +129,4 @@ def region_update(click_data):
 
 
 if __name__ == '__main__':
-    # app.run_server(debug=True, host='127.0.0.1', port=8020)
-    app.run_server()
+    app.run_server(debug=True)

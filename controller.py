@@ -11,7 +11,6 @@ hosps_file = "https://www.covid19.admin.ch/api/data/20220302-fq7zytwk/sources/CO
 vacc_file = "https://www.covid19.admin.ch/api/data/20220302-fq7zytwk/sources/COVID19VaccPersons_vaccine.csv"
 
 
-
 def get_swiss_df():
     swiss_df_url = "https://raw.githubusercontent.com/empet/Datasets/master/Swiss-synthetic-data.csv"
     return pd.read_csv(swiss_df_url).drop(columns=['2018', '2019'])
