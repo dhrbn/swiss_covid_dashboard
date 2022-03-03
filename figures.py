@@ -1,7 +1,59 @@
 
 import plotly.graph_objs as go
 
-from display_utils import COLORS
+from display_utils import COLORS, MAIN_COLOR
+
+
+def get_swiss_map_figure(map_df, jdata, current_region):
+
+    colorscale =  [
+        [0, MAIN_COLOR],
+        [0.5, MAIN_COLOR],
+        [1, '#dddddd']
+    ]
+
+    if current_region in ['CH', 'CHFL']:
+        map_df['mask'] = 0.5
+    else:
+        map_df['mask'] = [0 if row['canton-id'] == current_region else 1 for i, row in map_df.iterrows()]
+
+    gos = []
+    map_go = go.Choroplethmapbox(
+        geojson=jdata,
+        locations=map_df['canton-id'],
+        z=map_df['mask'],
+        featureidkey='properties.id',
+        colorscale=colorscale,
+        showscale=False,
+        marker=dict(opacity=0.75)
+    )
+    gos.append(map_go)
+
+    # fig.update_layout(
+    #     #     mapbox_style="carto-positron",
+    #     mapbox_style="white-bg",
+    #     mapbox_zoom=6.5, mapbox_center={"lat": 46.8181877, "lon": 8.2275124}, )
+    # fig.update_layout(margin={"r": 0, "t": 0, "l": 50, "b": 10})
+
+    layout = dict(
+        mapbox=dict(
+            style="white-bg",
+            zoom=6.1,
+            center=dict(lat=46.8181877, lon=8.2275124),
+        ),
+        xaxis=dict(
+            fixedrange=True,
+        ),
+        yaxis=dict(
+            fixedrange=True,
+        ),
+        dragmode=False,
+        # font=dict(
+        #     family='century gothic',
+        # ),
+    )
+
+    return go.Figure(data=gos, layout=layout)
 
 
 def get_cases_evolution_figure(df, region):
@@ -33,15 +85,16 @@ def get_cases_evolution_figure(df, region):
         template="plotly_white",
         annotations=[],
         showlegend=True,
-        xaxis=dict(
-            title='Time',
-        ),
+        # xaxis=dict(
+        #     title='Time',
+        # ),
         yaxis=dict(
             title=f"Cases",
         ),
-        title=dict(
-            text=f'Covid cases evolution for region {region}',
-        )
+        # title=dict(
+        #     text=f'Covid cases evolution for region {region}',
+        # ),
+        margin=dict(l=10, r=10, t=10, b=10),
         # font=dict(
         #     family='century gothic',
         # ),
@@ -78,15 +131,16 @@ def get_hosps_evolution_figure(df, region):
         template="plotly_white",
         annotations=[],
         showlegend=True,
-        xaxis=dict(
-            title='Time',
-        ),
+        # xaxis=dict(
+        #     title='Time',
+        # ),
         yaxis=dict(
             title=f"Count",
         ),
-        title=dict(
-            text=f'Deaths and hospitalizations evolution for region {region}',
-        )
+        # title=dict(
+        #     text=f'Deaths and hospitalizations evolution for region {region}',
+        # ),
+        margin=dict(l=10, r=10, t=10, b=10),
         # font=dict(
         #     family='century gothic',
         # ),
@@ -128,15 +182,16 @@ def get_vaccine_evolution_figure(df, region):
         template="plotly_white",
         annotations=[],
         showlegend=True,
-        xaxis=dict(
-            title='Time',
-        ),
+        # xaxis=dict(
+        #     title='Time',
+        # ),
         yaxis=dict(
-            title=f"Cases",
+            title=f"Count",
         ),
-        title=dict(
-            text=f'Vaccination evolution for region {region}',
-        )
+        # title=dict(
+        #     text=f'Vaccination evolution for region {region}',
+        # ),
+        margin=dict(l=10, r=10, t=20, b=20),
         # font=dict(
         #     family='century gothic',
         # ),
