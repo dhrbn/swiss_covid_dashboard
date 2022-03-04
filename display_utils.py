@@ -66,5 +66,5 @@ colors_array = np.array([
 COLORS = colors_array.flatten().tolist()
 
 BLACK = '#070524'
-MIDDLE_GRAY = '#e4e5ea'
+MIDDLE_GRAY = '#dddddd'
 LIGHT_GRAY = '#f0f1f5'

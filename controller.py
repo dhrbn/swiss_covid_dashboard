@@ -75,6 +75,12 @@ class Controller:
     def get_vaccine_evolution_figure(self):
         return figures.get_vaccine_evolution_figure(self.vacc_df, self._current_region)
 
+    def get_vaccination_coverage_figure(self):
+        return figures.get_vaccination_coverage_figure(self.vacc_df, self._current_region)
+
+    def get_vaccines_figure(self):
+        return figures.get_vaccines_figure(self.vacc_df, self._current_region)
+
     def set_current_region(self, region):
         self._current_region = region
 

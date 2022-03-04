@@ -59,17 +59,39 @@ app.layout = html.Div([
                         ),
                     ]),
                 ),
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H3("Vaccination evolution", className="card-title"),
-                        dcc.Graph(
-                            id='vaccine_evolution_figure',
-                            figure=controller.get_vaccine_evolution_figure(),
-                            style={'height': '200px'},
-                        ),
-                    ]),
-                ),
+                # dbc.Card(
+                #     dbc.CardBody([
+                #         html.H3("Vaccination evolution", className="card-title"),
+                #         dcc.Graph(
+                #             id='vaccine_evolution_figure',
+                #             figure=controller.get_vaccine_evolution_figure(),
+                #             style={'height': '200px'},
+                #         ),
+                #     ]),
+                # ),
             ]),
+        ]),
+        dbc.Row([
+            dbc.Card(
+                dbc.CardBody([
+                    html.H3("Vaccination coverage", className="card-title"),
+                    dcc.Graph(
+                        id='vaccination_coverage_figure',
+                        figure=controller.get_vaccination_coverage_figure(),
+                        style={'height': '350px', 'width': '350px'},
+                    ),
+                ]),
+            ),
+            dbc.Card(
+                dbc.CardBody([
+                    html.H3("Vaccine types", className="card-title"),
+                    dcc.Graph(
+                        id='vaccines_figure',
+                        figure=controller.get_vaccines_figure(),
+                        style={'height': '350px', 'width': '350px'},
+                    ),
+                ]),
+            ),
         ]),
 
         # dbc.Card(
@@ -106,7 +128,8 @@ app.layout = html.Div([
     [
         Output('cases_evolution_figure', 'figure'),
         Output('hosps_evolution_figure', 'figure'),
-        Output('vaccine_evolution_figure', 'figure'),
+        Output('vaccination_coverage_figure', 'figure'),
+        Output('vaccines_figure', 'figure'),
         Output('swiss_map_figure', 'figure'),
     ],
     [
@@ -120,12 +143,14 @@ def region_update(click_data):
         region = 'CH'
 
     controller.set_current_region(region)
-    fig1 = controller.get_cases_evolution_figure()
-    fig2 = controller.get_hosps_evolution_figure()
-    fig3 = controller.get_vaccine_evolution_figure()
-    fig4 = controller.get_swiss_map_figure()
 
-    return fig1, fig2, fig3, fig4
+    return [
+        controller.get_cases_evolution_figure(),
+        controller.get_hosps_evolution_figure(),
+        controller.get_vaccination_coverage_figure(),
+        controller.get_vaccines_figure(),
+        controller.get_swiss_map_figure(),
+    ]
 
 
 if __name__ == '__main__':

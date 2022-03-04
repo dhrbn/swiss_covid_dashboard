@@ -1,7 +1,7 @@
 
 import plotly.graph_objs as go
 
-from display_utils import COLORS, MAIN_COLOR
+from display_utils import COLORS, MAIN_COLOR, MIDDLE_GRAY
 
 
 def apply_moving_average(serie, size=7):
@@ -13,7 +13,7 @@ def get_swiss_map_figure(map_df, jdata, current_region):
     colorscale = [
         [0, MAIN_COLOR],
         [0.5, MAIN_COLOR],
-        [1, '#dddddd']
+        [1, MIDDLE_GRAY]
     ]
 
     if current_region in ['CH', 'CHFL']:
@@ -161,6 +161,73 @@ def get_vaccine_evolution_figure(df, region):
         yaxis=dict(
             title=f"Count",
         ),
+        margin=dict(l=10, r=10, t=20, b=20),
+    )
+
+    return go.Figure(data=gos, layout=layout)
+
+
+def get_vaccination_coverage_figure(df, region):
+    if 'geoRegion' in df.columns:
+        df = df[df.geoRegion == region]
+
+    total_pop = df.iloc[-1]['pop']
+    df = df[df.type == 'COVID19FullyVaccPersons']
+
+    all_vaccine_df = df.groupby(['date', 'geoRegion', 'type']).sum()
+    all_vaccine_df['date'] = [i[0] for i in all_vaccine_df.index]
+    all_vaccine_df['geoRegion'] = [i[1] for i in all_vaccine_df.index]
+    all_vaccine_df['type'] = [i[2] for i in all_vaccine_df.index]
+
+    total_vaccines = all_vaccine_df.iloc[-1]['sumTotal']
+
+    labels = ['Vaccinated', 'Non-vaccinated']
+    values = [100 * total_vaccines / total_pop, 100 * (1 - total_vaccines / total_pop)]
+    colors = [MAIN_COLOR, MIDDLE_GRAY]
+
+    gos = []
+    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors))
+    gos.append(pie_go)
+    layout = dict(
+        template="plotly_white",
+        annotations=[],
+        showlegend=False,
+        margin=dict(l=10, r=10, t=20, b=20),
+    )
+
+    return go.Figure(data=gos, layout=layout)
+
+
+def get_vaccines_figure(df, region):
+    if 'geoRegion' in df.columns:
+        df = df[df.geoRegion == region]
+
+    total_pop = df.iloc[-1]['pop']
+    df = df[df.type == 'COVID19FullyVaccPersons']
+
+    all_vaccine_df = df.groupby(['date', 'geoRegion', 'type']).sum()
+    all_vaccine_df['date'] = [i[0] for i in all_vaccine_df.index]
+    all_vaccine_df['geoRegion'] = [i[1] for i in all_vaccine_df.index]
+    all_vaccine_df['type'] = [i[2] for i in all_vaccine_df.index]
+
+    total_vaccines = all_vaccine_df.iloc[-1]['sumTotal']
+
+    labels = []
+    values = []
+    colors = []
+    for idx, vaccine in enumerate(df.vaccine.unique()):
+        df_vaccine = df[df.vaccine == vaccine]
+        labels.append(vaccine)
+        values.append(100 * df_vaccine.iloc[-1]['sumTotal'] / total_vaccines)
+        colors.append(COLORS[idx])
+
+    gos = []
+    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors))
+    gos.append(pie_go)
+    layout = dict(
+        template="plotly_white",
+        annotations=[],
+        showlegend=False,
         margin=dict(l=10, r=10, t=20, b=20),
     )
 
