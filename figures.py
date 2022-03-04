@@ -202,7 +202,6 @@ def get_vaccines_figure(df, region):
     if 'geoRegion' in df.columns:
         df = df[df.geoRegion == region]
 
-    total_pop = df.iloc[-1]['pop']
     df = df[df.type == 'COVID19FullyVaccPersons']
 
     all_vaccine_df = df.groupby(['date', 'geoRegion', 'type']).sum()
@@ -215,10 +214,41 @@ def get_vaccines_figure(df, region):
     labels = []
     values = []
     colors = []
-    for idx, vaccine in enumerate(df.vaccine.unique()):
+    for idx, vaccine in enumerate(sorted(df.vaccine.unique())):
         df_vaccine = df[df.vaccine == vaccine]
         labels.append(vaccine)
         values.append(100 * df_vaccine.iloc[-1]['sumTotal'] / total_vaccines)
+        colors.append(COLORS[idx])
+
+    gos = []
+    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors))
+    gos.append(pie_go)
+    layout = dict(
+        template="plotly_white",
+        annotations=[],
+        showlegend=False,
+        margin=dict(l=10, r=10, t=20, b=20),
+    )
+
+    return go.Figure(data=gos, layout=layout)
+
+
+def get_age_repartition_figure(df, region):
+    if 'geoRegion' in df.columns:
+        df = df[df.geoRegion == region]
+
+    max_date = df.date.max()
+    df = df[(df.date == max_date) & (df.ageRange != 'Total')]
+
+    total_cases = df.entries.sum()
+
+    labels = []
+    values = []
+    colors = []
+    for idx, age_range in enumerate(sorted(df.ageRange.unique())):
+        df_age = df[df.ageRange == age_range]
+        labels.append(age_range)
+        values.append(100 * df_age.iloc[0]['entries'] / total_cases)
         colors.append(COLORS[idx])
 
     gos = []

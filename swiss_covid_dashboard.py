@@ -92,6 +92,16 @@ app.layout = html.Div([
                     ),
                 ]),
             ),
+            dbc.Card(
+                dbc.CardBody([
+                    html.H3("Current cases age repartition", className="card-title"),
+                    dcc.Graph(
+                        id='age_repartition_figure',
+                        figure=controller.get_age_repartition_figure(),
+                        style={'height': '350px', 'width': '350px'},
+                    ),
+                ]),
+            ),
         ]),
 
         # dbc.Card(
@@ -130,6 +140,7 @@ app.layout = html.Div([
         Output('hosps_evolution_figure', 'figure'),
         Output('vaccination_coverage_figure', 'figure'),
         Output('vaccines_figure', 'figure'),
+        Output('age_repartition_figure', 'figure'),
         Output('swiss_map_figure', 'figure'),
     ],
     [
@@ -149,6 +160,7 @@ def region_update(click_data):
         controller.get_hosps_evolution_figure(),
         controller.get_vaccination_coverage_figure(),
         controller.get_vaccines_figure(),
+        controller.get_age_repartition_figure(),
         controller.get_swiss_map_figure(),
     ]
 
