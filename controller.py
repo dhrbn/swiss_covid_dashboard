@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 
 import figures
+import compute
 
 
 cases_file = "https://www.covid19.admin.ch/api/data/20220302-fq7zytwk/sources/COVID19CasesRawData_AKL10_d.csv"
@@ -83,6 +84,15 @@ class Controller:
 
     def get_age_repartition_figure(self):
         return figures.get_age_repartition_figure(self.cases_df, self._current_region)
+
+    def get_total_number_of_cases(self):
+        return compute.get_total_number_of_cases(self.hosps_df, self._current_region)
+
+    def get_total_number_of_deaths(self):
+        return compute.get_total_number_of_deaths(self.hosps_df, self._current_region)
+
+    def get_total_number_of_hospitalizations(self):
+        return compute.get_total_number_of_hospitalizations(self.hosps_df, self._current_region)
 
     def set_current_region(self, region):
         self._current_region = region
