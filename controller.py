@@ -94,6 +94,12 @@ class Controller:
     def get_total_number_of_hospitalizations(self):
         return compute.get_total_number_of_hospitalizations(self.hosps_df, self._current_region)
 
+    def get_deaths_cases_ratio(self):
+        return compute.get_deaths_cases_ratio(self.hosps_df, self._current_region)
+
+    def get_deaths_hospitalizations_ratio(self):
+        return compute.get_deaths_hospitalizations_ratio(self.hosps_df, self._current_region)
+
     def set_current_region(self, region):
         self._current_region = region
 

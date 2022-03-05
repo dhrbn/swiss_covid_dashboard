@@ -102,6 +102,21 @@ app.layout = html.Div([
                     ),
                 ]),
             ),
+            dbc.Card(
+                dbc.CardBody([
+                    html.H3("Total count data", className="card-title"),
+                    html.H4(f"Total number of cases: {controller.get_total_number_of_cases()}",
+                            id='total_number_of_cases'),
+                    html.H4(f"Total number of hospitalizations: {controller.get_total_number_of_hospitalizations()}",
+                            id='total_number_of_hospitalizations'),
+                    html.H4(f"Total number of deaths: {controller.get_total_number_of_deaths()}",
+                            id='total_number_of_deaths'),
+                    html.H4(f"Deaths per cases ratio: 1 for {controller.get_deaths_cases_ratio()}",
+                            id='deaths_per_cases_ratio'),
+                    html.H4(f"Deaths per cases hospitalizations: 1 for {controller.get_deaths_hospitalizations_ratio()}",
+                            id='deaths_per_hospitalizations_ratio'),
+                ]),
+            ),
         ]),
 
         # dbc.Card(
@@ -142,6 +157,11 @@ app.layout = html.Div([
         Output('vaccines_figure', 'figure'),
         Output('age_repartition_figure', 'figure'),
         Output('swiss_map_figure', 'figure'),
+        Output('total_number_of_cases', 'children'),
+        Output('total_number_of_hospitalizations', 'children'),
+        Output('total_number_of_deaths', 'children'),
+        Output('deaths_per_cases_ratio', 'children'),
+        Output('deaths_per_hospitalizations_ratio', 'children'),
     ],
     [
         Input('swiss_map_figure', 'clickData'),
@@ -162,6 +182,11 @@ def region_update(click_data):
         controller.get_vaccines_figure(),
         controller.get_age_repartition_figure(),
         controller.get_swiss_map_figure(),
+        f"Total number of cases: {controller.get_total_number_of_cases()}",
+        f"Total number of hospitalizations: {controller.get_total_number_of_hospitalizations()}",
+        f"Total number of deaths: {controller.get_total_number_of_deaths()}",
+        f"Deaths per cases ratio: 1 for {controller.get_deaths_cases_ratio()}",
+        f"Deaths per cases hospitalizations: 1 for {controller.get_deaths_hospitalizations_ratio()}",
     ]
 
 
