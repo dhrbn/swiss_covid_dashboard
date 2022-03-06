@@ -33,7 +33,6 @@ app.layout = html.Div([
                     dcc.Graph(
                         id='swiss_map_figure',
                         figure=controller.get_swiss_map_figure(),
-                        # config=dict(displayModeBar=False, scrollZoom=False, dragMode=False),
                         config=dict(displayModeBar=False, scrollZoom=False),
                     ),
                 ]),
@@ -59,16 +58,6 @@ app.layout = html.Div([
                         ),
                     ]),
                 ),
-                # dbc.Card(
-                #     dbc.CardBody([
-                #         html.H3("Vaccination evolution", className="card-title"),
-                #         dcc.Graph(
-                #             id='vaccine_evolution_figure',
-                #             figure=controller.get_vaccine_evolution_figure(),
-                #             style={'height': '200px'},
-                #         ),
-                #     ]),
-                # ),
             ]),
         ]),
         dbc.Row([
@@ -105,47 +94,20 @@ app.layout = html.Div([
             dbc.Card(
                 dbc.CardBody([
                     html.H3("Total count data", className="card-title"),
-                    html.H4(f"Total number of cases: {controller.get_total_number_of_cases()}",
-                            id='total_number_of_cases'),
-                    html.H4(f"Total number of hospitalizations: {controller.get_total_number_of_hospitalizations()}",
-                            id='total_number_of_hospitalizations'),
-                    html.H4(f"Total number of deaths: {controller.get_total_number_of_deaths()}",
-                            id='total_number_of_deaths'),
+
+                    dcc.Graph(
+                        id='total_count_figure',
+                        figure=controller.get_total_count_figure(),
+                        style={'height': '250px', 'width': '500px'},
+                    ),
                     html.H4(f"Deaths per cases ratio: 1 for {controller.get_deaths_cases_ratio()}",
-                            id='deaths_per_cases_ratio'),
-                    html.H4(f"Deaths per cases hospitalizations: 1 for {controller.get_deaths_hospitalizations_ratio()}",
-                            id='deaths_per_hospitalizations_ratio'),
+                            id='deaths_per_cases_ratio', style={'font-size': '3em'}),
+                    html.H4(f"Deaths per hospitalizations ratio: 1 for {controller.get_deaths_hospitalizations_ratio()}",
+                            id='deaths_per_hospitalizations_ratio', style={'font-size': '3em'}),
                 ]),
             ),
         ]),
-
-        # dbc.Card(
-        #     dbc.CardBody([
-        #         dcc.Graph(
-        #             id='cases_evolution_figure',
-        #             figure=controller.get_cases_evolution_figure(),
-        #         ),
-        #     ])
-        # ),
-        # dbc.Card(
-        #     dbc.CardBody([
-        #         dcc.Graph(
-        #             id='hosps_evolution_figure',
-        #             figure=controller.get_hosps_evolution_figure(),
-        #         ),
-        #     ])
-        # ),
-        # dbc.Card(
-        #     dbc.CardBody([
-        #         dcc.Graph(
-        #             id='vaccine_evolution_figure',
-        #             figure=controller.get_vaccine_evolution_figure(),
-        #         ),
-        #     ])
-        # ),
-    # ], style={'max-width': '3000px', 'max-height': '600px'})
     ], style={'max-width': '100%', 'max-height': '100%'})
-    # ])
 ])
 
 
@@ -157,9 +119,7 @@ app.layout = html.Div([
         Output('vaccines_figure', 'figure'),
         Output('age_repartition_figure', 'figure'),
         Output('swiss_map_figure', 'figure'),
-        Output('total_number_of_cases', 'children'),
-        Output('total_number_of_hospitalizations', 'children'),
-        Output('total_number_of_deaths', 'children'),
+        Output('total_count_figure', 'figure'),
         Output('deaths_per_cases_ratio', 'children'),
         Output('deaths_per_hospitalizations_ratio', 'children'),
     ],
@@ -182,9 +142,7 @@ def region_update(click_data):
         controller.get_vaccines_figure(),
         controller.get_age_repartition_figure(),
         controller.get_swiss_map_figure(),
-        f"Total number of cases: {controller.get_total_number_of_cases()}",
-        f"Total number of hospitalizations: {controller.get_total_number_of_hospitalizations()}",
-        f"Total number of deaths: {controller.get_total_number_of_deaths()}",
+        controller.get_total_count_figure(),
         f"Deaths per cases ratio: 1 for {controller.get_deaths_cases_ratio()}",
         f"Deaths per cases hospitalizations: 1 for {controller.get_deaths_hospitalizations_ratio()}",
     ]

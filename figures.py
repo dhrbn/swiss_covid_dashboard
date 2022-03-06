@@ -1,7 +1,8 @@
 
 import plotly.graph_objs as go
 
-from display_utils import COLORS, MAIN_COLOR, MIDDLE_GRAY
+import compute
+from display_utils import COLORS, MAIN_COLOR, MIDDLE_GRAY, BLACK
 
 
 def apply_moving_average(serie, size=7):
@@ -257,6 +258,67 @@ def get_age_repartition_figure(df, region):
     layout = dict(
         template="plotly_white",
         annotations=[],
+        showlegend=False,
+        margin=dict(l=10, r=10, t=20, b=20),
+    )
+
+    return go.Figure(data=gos, layout=layout)
+
+
+def get_total_count_figure(df, region):
+    if 'geoRegion' in df.columns:
+        df = df[df.geoRegion == region]
+
+    dic = dict(
+        cases=dict(
+            value=compute.get_total_number_of_cases(df),
+            color=COLORS[2],
+            name='Cases',
+        ),
+        hosps=dict(
+            value=compute.get_total_number_of_hospitalizations(df),
+            color=COLORS[0],
+            name='Hospitalizations',
+        ),
+        deaths=dict(
+            value=compute.get_total_number_of_deaths(df),
+            color=COLORS[1],
+            name='Deaths',
+        ),
+    )
+
+    gos = []
+    annotations = []
+    for v in dic.values():
+        bar_go = go.Bar(
+            x=[v['name']],
+            y=[v['value']],
+            name=v['name'],
+            marker_color=v['color'],
+        )
+        gos.append(bar_go)
+
+        annotation = dict(
+            x=v['name'],
+            y=v['value'],
+            text=f"<b>{v['value']}</b>",
+            # xref='paper',
+            # yref='paper',
+            align='center',
+            xanchor="center",
+            yanchor="bottom",
+            showarrow=False,
+            font=dict(
+                # family='century gothic',
+                size=14,
+                color=v['color'],
+            )
+        )
+        annotations.append(annotation)
+
+    layout = dict(
+        template="plotly_white",
+        annotations=annotations,
         showlegend=False,
         margin=dict(l=10, r=10, t=20, b=20),
     )

@@ -85,6 +85,9 @@ class Controller:
     def get_age_repartition_figure(self):
         return figures.get_age_repartition_figure(self.cases_df, self._current_region)
 
+    def get_total_count_figure(self):
+        return figures.get_total_count_figure(self.hosps_df, self._current_region)
+
     def get_total_number_of_cases(self):
         return compute.get_total_number_of_cases(self.hosps_df, self._current_region)
 
