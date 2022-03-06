@@ -98,12 +98,12 @@ app.layout = html.Div([
                     dcc.Graph(
                         id='total_count_figure',
                         figure=controller.get_total_count_figure(),
-                        style={'height': '250px', 'width': '500px'},
+                        style={'height': '250px', 'width': '550px'},
                     ),
                     html.H4(f"Deaths per cases ratio: 1 for {controller.get_deaths_cases_ratio()}",
-                            id='deaths_per_cases_ratio', style={'font-size': '3em'}),
+                            id='deaths_per_cases_ratio', style={'font-size': '2.5em', 'padding-top': '20px'}),
                     html.H4(f"Deaths per hospitalizations ratio: 1 for {controller.get_deaths_hospitalizations_ratio()}",
-                            id='deaths_per_hospitalizations_ratio', style={'font-size': '3em'}),
+                            id='deaths_per_hospitalizations_ratio', style={'font-size': '2.5em'}),
                 ]),
             ),
         ]),
@@ -144,7 +144,7 @@ def region_update(click_data):
         controller.get_swiss_map_figure(),
         controller.get_total_count_figure(),
         f"Deaths per cases ratio: 1 for {controller.get_deaths_cases_ratio()}",
-        f"Deaths per cases hospitalizations: 1 for {controller.get_deaths_hospitalizations_ratio()}",
+        f"Deaths per hospitalizations ratio: 1 for {controller.get_deaths_hospitalizations_ratio()}",
     ]
 
 
