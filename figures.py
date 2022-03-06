@@ -47,6 +47,7 @@ def get_swiss_map_figure(map_df, jdata, current_region):
             fixedrange=True,
         ),
         dragmode=False,
+        margin=dict(l=10, r=10, t=10, b=10),
     )
 
     return go.Figure(data=gos, layout=layout)
