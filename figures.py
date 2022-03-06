@@ -57,8 +57,15 @@ def get_cases_evolution_figure(df, region):
     if 'geoRegion' in df.columns:
         df = df[df.geoRegion == region]
 
+    iter_list = ['Total'] + [l for l in sorted(df.ageRange.unique()) if l != 'Total']
+
     gos = []
-    for idx, age_range in enumerate(sorted(df.ageRange.unique())):
+    step = 0  # step is used to apply COLORS[2] to "Total" age range, to be coherent with the total count figure
+    for idx, age_range in enumerate(iter_list):
+        if idx == 1:
+            step -= 1
+        elif idx == 3:
+            step += 1
         df_age = df[df.ageRange == age_range]
         evo_go = go.Scatter(
             x=df_age.date,
@@ -69,7 +76,7 @@ def get_cases_evolution_figure(df, region):
             yaxis='y',
             line=dict(
                 # width=2,
-                color=COLORS[idx],
+                color=COLORS[idx + step] if age_range != 'Total' else COLORS[2],
             ),
             hoverlabel=dict(
                 namelength=-1,
