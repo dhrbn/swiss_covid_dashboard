@@ -24,7 +24,12 @@ app.layout = html.Div([
         dbc.Row([
             dbc.Col([
                 html.H1(f"Swiss Covid Dashboard", style={'color': MAIN_COLOR})
-            ], )
+            ]),
+            dbc.Button(
+                "Reset",
+                color='primary',
+                id='reset_button',
+            ),
         ]),
         html.Hr(),
         dbc.Row([
@@ -125,10 +130,14 @@ app.layout = html.Div([
     ],
     [
         Input('swiss_map_figure', 'clickData'),
+        Input('reset_button', 'n_clicks'),
     ]
 )
-def region_update(click_data):
-    if click_data is not None:
+def region_update(click_data, button_clicked):
+    if button_clicked is not None and button_clicked > controller.get_reset_clicks():
+        region = 'CH'
+        controller.set_reset_clicks(button_clicked)
+    elif click_data is not None and click_data['points'][0]['location'] != controller.get_current_region():
         region = click_data['points'][0]['location']
     else:
         region = 'CH'

@@ -60,6 +60,7 @@ class Controller:
         self._jdata = get_jdata()
 
         self._current_region = 'CH'
+        self._reset_clicks = 0
 
     def get_regions(self):
         return ['CH'] + [gr for gr in sorted(self.cases_df.geoRegion.unique()) if gr != 'CH']
@@ -108,3 +109,9 @@ class Controller:
 
     def get_current_region(self):
         return self._current_region
+
+    def set_reset_clicks(self, reset_clicks):
+        self._reset_clicks = reset_clicks
+
+    def get_reset_clicks(self):
+        return self._reset_clicks
