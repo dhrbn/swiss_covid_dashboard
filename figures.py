@@ -187,7 +187,7 @@ def get_vaccination_coverage_figure(df, region):
     colors = [MAIN_COLOR, MIDDLE_GRAY]
 
     gos = []
-    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors))
+    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors), textinfo='label')
     gos.append(pie_go)
     layout = dict(
         template="plotly_white",
@@ -222,7 +222,7 @@ def get_vaccines_figure(df, region):
         colors.append(COLORS[idx])
 
     gos = []
-    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors))
+    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors), textinfo='label')
     gos.append(pie_go)
     layout = dict(
         template="plotly_white",
@@ -253,7 +253,7 @@ def get_age_repartition_figure(df, region):
         colors.append(COLORS[idx])
 
     gos = []
-    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors))
+    pie_go = go.Pie(labels=labels, values=values, hole=.5, marker=dict(colors=colors), textinfo='label')
     gos.append(pie_go)
     layout = dict(
         template="plotly_white",
